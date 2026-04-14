@@ -2,10 +2,10 @@
   <section id="about" class="fade-up mx-auto w-[95%] max-w-6xl py-20">
     <h2 class="section-title">Chi Sono</h2>
     <div class="grid gap-8 md:grid-cols-2">
-      <div class="glass-card overflow-hidden rounded-3xl p-3">
+      <div class="glass-card reveal-card parallax-block overflow-hidden rounded-3xl p-3">
         <div class="h-80 rounded-2xl bg-gradient-to-br from-sky-400/30 to-emerald-400/30" />
       </div>
-      <article class="glass-card rounded-3xl p-8">
+      <article class="glass-card reveal-card rounded-3xl p-8">
         <p class="mb-4 leading-relaxed text-[var(--text-secondary)]">
           Sono Simone, Full Stack Developer con 3 anni di esperienza nella progettazione di applicazioni web moderne,
           APIs robuste e architetture a microservizi.

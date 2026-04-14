@@ -18,7 +18,7 @@ const links = [
 </script>
 
 <template>
-  <header class="fixed inset-x-0 top-0 z-40 mx-auto mt-4 flex w-[95%] max-w-6xl items-center justify-between rounded-2xl border border-slate-300/20 px-4 py-3 glass-card">
+  <header class="fixed inset-x-0 top-0 z-40 mx-auto mt-4 flex w-[95%] max-w-6xl items-center justify-between rounded-2xl border border-slate-300/20 px-4 py-3 glass-card reveal-card">
     <div class="flex items-center gap-2 font-semibold">
       <Menu class="h-4 w-4 text-[var(--accent-primary)]" />
       <span>Simone.dev</span>

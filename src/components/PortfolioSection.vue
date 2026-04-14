@@ -29,7 +29,7 @@ function resetTilt(event) {
       <article
         v-for="project in projects"
         :key="project.name"
-        class="glass-card rounded-3xl p-6 transition duration-300"
+        class="glass-card reveal-card rounded-3xl p-6 transition duration-300"
         @mousemove="handleTilt"
         @mouseleave="resetTilt"
       >

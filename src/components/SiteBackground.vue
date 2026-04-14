@@ -3,74 +3,123 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { gsap } from 'gsap'
 
 const canvasRef = ref(null)
-let animationFrame
 let ctx
-let particles = []
+let rafId
+let nodes = []
+let floatTween
 
-function buildParticles(width, height) {
-  particles = Array.from({ length: Math.min(90, Math.floor(width / 18)) }).map(() => ({
-    x: Math.random() * width,
-    y: Math.random() * height,
-    r: Math.random() * 1.8 + 0.7,
-    vx: (Math.random() - 0.5) * 0.35,
-    vy: (Math.random() - 0.5) * 0.35,
-  }))
-}
+function createNodes(width, height) {
+  const spacing = Math.max(90, Math.floor(width / 14))
+  const cols = Math.ceil(width / spacing) + 1
+  const rows = Math.ceil(height / spacing) + 1
 
-function draw() {
-  if (!ctx || !canvasRef.value) return
-  const { width, height } = canvasRef.value
-  ctx.clearRect(0, 0, width, height)
-
-  particles.forEach((p) => {
-    p.x += p.vx
-    p.y += p.vy
-    if (p.x < 0 || p.x > width) p.vx *= -1
-    if (p.y < 0 || p.y > height) p.vy *= -1
-
-    ctx.beginPath()
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-    ctx.fillStyle = 'rgba(56,189,248,0.24)'
-    ctx.fill()
-  })
-
-  animationFrame = requestAnimationFrame(draw)
+  nodes = []
+  for (let y = 0; y < rows; y += 1) {
+    for (let x = 0; x < cols; x += 1) {
+      nodes.push({
+        x: x * spacing + (Math.random() * 14 - 7),
+        y: y * spacing + (Math.random() * 14 - 7),
+        ox: x * spacing,
+        oy: y * spacing,
+        pulse: Math.random() * Math.PI * 2,
+      })
+    }
+  }
 }
 
 function resizeCanvas() {
   if (!canvasRef.value) return
-  const canvas = canvasRef.value
-  canvas.width = window.innerWidth
-  canvas.height = document.body.scrollHeight
-  buildParticles(canvas.width, canvas.height)
+  canvasRef.value.width = window.innerWidth
+  canvasRef.value.height = Math.max(window.innerHeight, document.body.scrollHeight)
+  createNodes(canvasRef.value.width, canvasRef.value.height)
+}
+
+function drawWireframe() {
+  if (!ctx || !canvasRef.value) return
+  const { width, height } = canvasRef.value
+  ctx.clearRect(0, 0, width, height)
+
+  for (let i = 0; i < nodes.length; i += 1) {
+    const n1 = nodes[i]
+
+    n1.pulse += 0.007
+    n1.x = n1.ox + Math.cos(n1.pulse) * 5
+    n1.y = n1.oy + Math.sin(n1.pulse) * 5
+
+    for (let j = i + 1; j < nodes.length; j += 1) {
+      const n2 = nodes[j]
+      const dx = n1.x - n2.x
+      const dy = n1.y - n2.y
+      const dist = Math.hypot(dx, dy)
+
+      if (dist < 130) {
+        const alpha = 0.18 - (dist / 130) * 0.16
+        ctx.strokeStyle = `rgba(56, 189, 248, ${Math.max(alpha, 0.03)})`
+        ctx.lineWidth = 1
+        ctx.beginPath()
+        ctx.moveTo(n1.x, n1.y)
+        ctx.lineTo(n2.x, n2.y)
+        ctx.stroke()
+      }
+
+      if (dist < 96) {
+        const n3 = nodes[j + 1]
+        if (n3) {
+          ctx.strokeStyle = 'rgba(52, 211, 153, 0.07)'
+          ctx.beginPath()
+          ctx.moveTo(n1.x, n1.y)
+          ctx.lineTo(n2.x, n2.y)
+          ctx.lineTo(n3.x, n3.y)
+          ctx.closePath()
+          ctx.stroke()
+        }
+      }
+    }
+
+    ctx.fillStyle = 'rgba(125, 211, 252, 0.28)'
+    ctx.beginPath()
+    ctx.arc(n1.x, n1.y, 1.1, 0, Math.PI * 2)
+    ctx.fill()
+  }
+
+  rafId = requestAnimationFrame(drawWireframe)
 }
 
 onMounted(() => {
+  if (!canvasRef.value) return
   ctx = canvasRef.value.getContext('2d')
   resizeCanvas()
-  draw()
-  gsap.to('.grid-overlay', { backgroundPosition: '200px 200px', repeat: -1, duration: 20, ease: 'none' })
+  drawWireframe()
+
+  floatTween = gsap.to('.polygon-glow', {
+    opacity: 0.26,
+    duration: 3,
+    yoyo: true,
+    repeat: -1,
+    ease: 'sine.inOut',
+  })
+
   window.addEventListener('resize', resizeCanvas)
 })
 
 onUnmounted(() => {
-  cancelAnimationFrame(animationFrame)
+  if (rafId) cancelAnimationFrame(rafId)
+  if (floatTween) floatTween.kill()
   window.removeEventListener('resize', resizeCanvas)
 })
 </script>
 
 <template>
   <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-    <div class="grid-overlay absolute inset-0 opacity-35" />
+    <div class="polygon-glow absolute inset-0" />
     <canvas ref="canvasRef" class="h-full w-full" />
   </div>
 </template>
 
 <style scoped>
-.grid-overlay {
-  background-image:
-    linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
-  background-size: 40px 40px;
+.polygon-glow {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.16), transparent 45%),
+    radial-gradient(circle at 80% 60%, rgba(52, 211, 153, 0.13), transparent 50%);
 }
 </style>

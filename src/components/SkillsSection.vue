@@ -22,7 +22,7 @@ const skillGroups = {
   <section id="skills" class="mx-auto w-[95%] max-w-6xl py-20">
     <h2 class="section-title">Skills</h2>
     <div class="grid gap-6 md:grid-cols-3">
-      <div v-for="(skills, groupName) in skillGroups" :key="groupName" class="glass-card rounded-3xl p-6">
+      <div v-for="(skills, groupName) in skillGroups" :key="groupName" class="glass-card reveal-card rounded-3xl p-6">
         <h3 class="mb-5 text-xl font-semibold">{{ groupName }}</h3>
         <div class="space-y-4">
           <div v-for="skill in skills" :key="skill.name">

@@ -35,7 +35,7 @@ html {
 body {
   margin: 0;
   font-family: 'Inter', system-ui, sans-serif;
-  background: var(--bg-primary);
+  background: radial-gradient(circle at 20% 10%, rgba(56, 189, 248, 0.09), transparent 35%), var(--bg-primary);
   color: var(--text-primary);
   transition: background 0.4s ease, color 0.4s ease;
 }

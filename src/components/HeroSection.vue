@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 
 const words = ['Vue.js', 'SQL Server', 'Microservices', 'ASP.NET Core', 'UI/UX Design']
 const typedWord = ref('')
+const titleParts = ['Simone', '-', 'Full', 'Stack', 'Developer']
 let intervalId
 let wordIndex = 0
 let charIndex = 0
@@ -32,16 +33,18 @@ onUnmounted(() => clearInterval(intervalId))
 
 <template>
   <section id="hero" class="fade-up relative mx-auto flex min-h-screen w-[95%] max-w-6xl flex-col justify-center pt-24">
-    <p class="mb-4 text-sm uppercase tracking-[0.3em] text-[var(--accent-secondary)]">Full Stack Portfolio</p>
-    <h1 class="mb-4 text-4xl font-extrabold leading-tight md:text-6xl">Simone - Full Stack Developer</h1>
-    <p class="mb-8 max-w-2xl text-lg text-[var(--text-secondary)]">
+    <p class="wow-pop mb-4 text-sm uppercase tracking-[0.3em] text-[var(--accent-secondary)]">Full Stack Portfolio</p>
+    <h1 class="hero-title mb-4 flex flex-wrap gap-x-3 text-4xl font-extrabold leading-tight md:text-6xl">
+      <span v-for="part in titleParts" :key="part" class="inline-block">{{ part }}</span>
+    </h1>
+    <p class="wow-pop mb-8 max-w-2xl text-lg text-[var(--text-secondary)]">
       Costruisco prodotti scalabili ed esperienze digitali pulite.
       <span class="font-semibold text-[var(--accent-primary)]">{{ typedWord }}</span>
       <span class="animate-pulse">|</span>
     </p>
     <div class="flex flex-wrap gap-4">
-      <a href="#about" class="rounded-2xl bg-[var(--accent-primary)] px-6 py-3 font-semibold text-slate-900 transition hover:-translate-y-1">Chi Sono</a>
-      <a href="#" class="rounded-2xl border border-[var(--accent-primary)] px-6 py-3 font-semibold transition hover:scale-105">Download CV</a>
+      <a href="#about" class="wow-pop floaty rounded-2xl bg-[var(--accent-primary)] px-6 py-3 font-semibold text-slate-900 transition hover:-translate-y-1">Chi Sono</a>
+      <a href="#" class="wow-pop floaty rounded-2xl border border-[var(--accent-primary)] px-6 py-3 font-semibold transition hover:scale-105">Download CV</a>
     </div>
   </section>
 </template>

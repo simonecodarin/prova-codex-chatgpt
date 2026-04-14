@@ -3,7 +3,7 @@ import { Github, Linkedin, Mail } from 'lucide-vue-next'
 </script>
 
 <template>
-  <footer id="footer" class="mx-auto mb-10 mt-12 w-[95%] max-w-6xl rounded-3xl glass-card px-6 py-10">
+  <footer id="footer" class="mx-auto mb-10 mt-12 w-[95%] max-w-6xl rounded-3xl glass-card reveal-card px-6 py-10">
     <div class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
       <div>
         <h3 class="text-xl font-semibold">Contatti</h3>

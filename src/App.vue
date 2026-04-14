@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import TerminalPreloader from './components/TerminalPreloader.vue'
 import TopNav from './components/TopNav.vue'
 import SiteBackground from './components/SiteBackground.vue'
@@ -9,7 +9,7 @@ import TimelineSection from './components/TimelineSection.vue'
 import PortfolioSection from './components/PortfolioSection.vue'
 import SkillsSection from './components/SkillsSection.vue'
 import SiteFooter from './components/SiteFooter.vue'
-import { initGlobalScroll } from './composables/usePortfolioAnimations'
+import { cleanupGlobalScroll, initGlobalScroll } from './composables/usePortfolioAnimations'
 
 const ready = ref(false)
 const isDark = ref(true)
@@ -22,6 +22,10 @@ watch(isDark, (val) => {
 onMounted(() => {
   document.documentElement.classList.toggle('dark', isDark.value)
   initGlobalScroll(rootRef)
+})
+
+onUnmounted(() => {
+  cleanupGlobalScroll()
 })
 </script>
 
