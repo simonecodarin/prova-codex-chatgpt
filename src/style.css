@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #edf6ff;
+  --bg-secondary: #ffffffcc;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --accent-primary: #0ea5e9;
+  --accent-secondary: #10b981;
+  --border-soft: #bfdbfe66;
+}
+
+:root.dark {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293bcc;
+  --text-primary: #dbeafe;
+  --text-secondary: #bfdbfe;
+  --accent-primary: #38bdf8;
+  --accent-secondary: #34d399;
+  --border-soft: #93c5fd33;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+.glass-card {
+  background: linear-gradient(130deg, color-mix(in oklab, var(--bg-secondary), white 8%), var(--bg-secondary));
+  border: 1px solid var(--border-soft);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(2, 6, 23, 0.2);
+}
+
+.section-title {
+  @apply mb-8 text-3xl font-bold md:text-4xl;
+}
